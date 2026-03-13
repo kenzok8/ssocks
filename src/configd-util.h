@@ -33,7 +33,7 @@
 
 
 
-struct globalArgsServer_t {
+static struct globalArgsServer_t {
     char fileauth[255];				// -a option
     char fileconfig[255];			// -f option
     char filelog[255];			// -l option
