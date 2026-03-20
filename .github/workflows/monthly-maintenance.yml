@@ -51,6 +51,9 @@ jobs:
           killall ssocks ssocksd nsocks rcsocks rssocks nc 2>/dev/null || true
           popd
 
+      - name: Clean build outputs
+        run: rm -rf build
+
       - name: Audit stale artifacts
         run: |
           set -euo pipefail
