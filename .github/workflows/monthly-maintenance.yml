@@ -21,8 +21,35 @@ jobs:
       - name: Build
         run: cmake --build build -j"$(nproc)"
 
-      - name: Run tests
-        run: bash ./test.sh
+      - name: Run smoke tests
+        run: |
+          set -euo pipefail
+          pushd build
+          killall ssocks ssocksd nsocks rcsocks rssocks nc 2>/dev/null || true
+
+          t1=$(tr </dev/urandom -dc a-z | head -c6 || true)
+          echo -ne "HTTP/1.0 200 OK\r\nContent-Length: 6\r\n\r\n$t1" | nc -l 8080 >/dev/null &
+          ./ssocksd -p 8081 -d
+          ret=$(curl -s -x socks5://127.0.0.1:8081 127.0.0.1:8080)
+          test "$ret" = "$t1"
+
+          t2=$(tr </dev/urandom -dc a-z | head -c6 || true)
+          echo -ne "HTTP/1.0 200 OK\r\nContent-Length: 6\r\n\r\n$t2" | nc -l 8080 >/dev/null &
+          ./ssocks -s 127.0.0.1:8081 -l 8082 -b
+          ret=$(curl -s -x socks5://127.0.0.1:8082 127.0.0.1:8080)
+          test "$ret" = "$t2"
+
+          killall nc 2>/dev/null || true
+
+          t3=$(tr </dev/urandom -dc a-z | head -c6 || true)
+          echo -ne "HTTP/1.0 200 OK\r\nContent-Length: 6\r\n\r\n$t3" | nc -l 8080 >/dev/null &
+          ./rcsocks -p 8083 -l 8084 -b
+          ./rssocks -s 127.0.0.1:8083 -b
+          ret=$(curl -s -x socks5://127.0.0.1:8084 127.0.0.1:8080)
+          test "$ret" = "$t3"
+
+          killall ssocks ssocksd nsocks rcsocks rssocks nc 2>/dev/null || true
+          popd
 
       - name: Audit stale artifacts
         run: |
