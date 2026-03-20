@@ -7,6 +7,9 @@ build
 .deps
 .libs
 .*
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
 *~
 autom4te.cache
 config.log
