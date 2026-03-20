@@ -37,6 +37,7 @@ else hl "ok"; fi
 hl "test nsocks (nc -> ssd -> ns)"
 tstr=$(tr </dev/urandom -dc a-z | head -c6)
 echo -ne "HTTP/1.0 200 OK\r\nContent-Length: 6\r\n\r\n$tstr" | nc -q 5 -l 8080 >/dev/null &
+sleep 1
 ret=$(./nsocks -s 127.0.0.1:8081 127.0.0.1 8080 | tail -n 1)
 
 if [ "$ret" != "$tstr" ]; then
