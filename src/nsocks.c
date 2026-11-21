@@ -89,6 +89,7 @@ void netcat_like(s_socket *s) {
     fd_set set_read, set_write;
     char buf[4096];
     int buf_a = 0, buf_b = 0, k = 0;
+    int stdin_eof = 0;
 
     struct timeval t;
     t.tv_sec = 0;
@@ -103,7 +104,8 @@ void netcat_like(s_socket *s) {
         FD_ZERO (&set_write);
 
 #ifndef _WIN32
-        FD_SET (0, &set_read);
+        if (!stdin_eof)
+            FD_SET (0, &set_read);
 #endif
         FD_SET (s->soc, &set_read);
         if (s->soc > maxfd) maxfd = s->soc; /* Fix maxfd */
@@ -130,7 +132,13 @@ void netcat_like(s_socket *s) {
                 }
                 if ( k == 0 ) {
                     ERROR(L_DEBUG, "client: read 0 bytes on stdin");
-                    boucle_princ = 0;
+                    /* stdin EOF: stop watching fd 0, but keep relaying
+                       socket -> stdout until the socket closes
+                       (netcat half-close semantics). Previously this set
+                       boucle_princ = 0 and dropped the pending reply,
+                       e.g. when stdin is /dev/null (CI) the first select
+                       already reports EOF and nsocks exits in ~9ms. */
+                    stdin_eof = 1;
                 }
                 buf_b += k;
             }
