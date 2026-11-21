@@ -36,11 +36,10 @@
 int test_request4(s_socks *s, s_socket *stream, s_socket *bind,
                   s_socks_conf *c, s_buffer *buf)
 {
+    (void)c;
     Socks4Req req;
     TRACE(L_DEBUG, "server [%d]: testing client request ...",
           s->id);
-
-    uint16_t port = 0;
 
     /* Rebuild the packet but don't extract
      * DST.ADDR and DST.PORT in Socks5Req struct */
@@ -88,6 +87,8 @@ int test_request4(s_socks *s, s_socket *stream, s_socket *bind,
 void build_request_ack4(s_socks *s, s_socks_conf *c,
                         s_socket *stream, s_socket *bind, s_buffer *buf)
 {
+    (void)c;
+    (void)bind;
 
     Socks4ReqAck res;
 #ifdef _WIN32

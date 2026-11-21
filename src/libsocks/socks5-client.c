@@ -50,6 +50,7 @@
  */
 void build_version(s_socks *s, s_socks_conf *c, s_buffer *buf)
 {
+    (void)s;
     Socks5Version req;
 
     init_buffer(buf);
@@ -103,7 +104,7 @@ int test_version_ack(s_socks *s, s_socks_conf *c, s_buffer *buf)
     s->version = res.ver;
 
     /* Check if method is allowed by the client */
-    for (j = 0; j < c->config.cli->n_allowed_method; ++j ) {
+    for (j = 0; j < (int)c->config.cli->n_allowed_method; ++j ) {
         if ( c->config.cli->allowed_method[j] == res.method ) {
             s->method = c->config.cli->allowed_method[j];
             break;
@@ -147,6 +148,7 @@ int test_version_ack(s_socks *s, s_socks_conf *c, s_buffer *buf)
  */
 int build_auth(s_socks *s, s_socks_conf *c, s_buffer *buf)
 {
+    (void)s;
     Socks5Auth req;
     char *uname, *passwd;
 
@@ -210,6 +212,7 @@ int build_auth(s_socks *s, s_socks_conf *c, s_buffer *buf)
  */
 int test_auth_ack(s_socks *s, s_socks_conf *c, s_buffer *buf)
 {
+    (void)c;
     Socks5AuthACK res;
     TRACE(L_DEBUG, "client: testing authentication ack ...");
 
@@ -472,6 +475,7 @@ int dispatch_client_write(s_socket *soc, s_socks *socks,
 int dispatch_client_read(s_socket *soc, s_socket *soc_stream,
                          s_socks *socks, s_buffer *buf, s_buffer *buf_stream, s_socks_conf *conf)
 {
+    (void)soc_stream;
     int k = 0;
     switch(socks->state) {
     case S_R_VER_ACK:
@@ -719,6 +723,7 @@ int new_socket_with_socks(s_socket *s,
                           char *host, int port, int listen,
                           int version, int ssl, int cmd)
 {
+    (void)ssl; /* only used when HAVE_LIBSSL is defined */
     int maxfd = 0, res;
     fd_set set_read, set_write;
 

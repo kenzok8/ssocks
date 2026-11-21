@@ -47,7 +47,6 @@ int new_client_socket_no(char *nameS, uint16_t nport, struct sockaddr_in *addrC,
 int new_client_socket_no_ip(char ip[4], uint16_t nport, struct sockaddr_in *addrC,
                             struct sockaddr_in *addrS);
 
-int set_blocking(int fd);
 int set_non_blocking(int fd);
 
 

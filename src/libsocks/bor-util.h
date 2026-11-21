@@ -31,24 +31,11 @@ extern "C" {
 #endif
 
 
-/* UNIX_PATH_MAX pas toujours definie */
-#ifndef UNIX_PATH_MAX
-#define UNIX_PATH_MAX 108
-#endif
-
 /* Prototypes */
 void bor_perror (const char *funcname);
 int bor_signal (int sig, void (*h)(int), int options);
 
-int bor_bind_un (int soc, struct sockaddr_un *adr);
-int bor_sendto_un (int soc, void *buf, size_t len, struct sockaddr_un *adr);
-int bor_recvfrom_un (int soc, void *buf, size_t len, struct sockaddr_un *adr);
-int bor_connect_un (int soc, struct sockaddr_un *adr);
-int bor_accept_un (int soc, struct sockaddr_un *adr);
-
 int bor_bind_in (int soc, struct sockaddr_in *adr);
-int bor_sendto_in (int soc, void *buf, size_t len, struct sockaddr_in *adr);
-int bor_recvfrom_in (int soc, void *buf, size_t len, struct sockaddr_in *adr);
 int bor_connect_in (int soc, struct sockaddr_in *adr);
 int bor_accept_in (int soc, struct sockaddr_in *adr);
 int bor_getsockname_in (int soc, struct sockaddr_in *adr);

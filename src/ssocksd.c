@@ -191,7 +191,7 @@ void parseArg(int argc, char *argv[]) {
 
         case 'l':
             strncpy_sx(globalArgsServer.filelog, optarg,
-                       sizeof(*globalArgsServer.filelog));
+                       sizeof(globalArgsServer.filelog));
             break;
 
         case 'f':

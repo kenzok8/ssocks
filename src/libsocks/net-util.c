@@ -230,11 +230,6 @@ int new_client_socket(char *nameS, uint16_t nport,
     return soc;
 }
 
-int set_blocking(int fd) {
-    int  r = 0;
-    return r;
-}
-
 /* Find on the board don't remember were,
  * I just add error handling with perror
  */

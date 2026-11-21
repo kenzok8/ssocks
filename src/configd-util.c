@@ -132,51 +132,19 @@ int writePID(char *filename) {
 
 
 
-/* Same function in unistd.h daemon */
-void background() {
-#if _WIN32
-    // do nothing for now...
-    // FreeConsole ?
-#else
-    pid_t pid, sid;
-
-
-    /* Fork off the parent process */
-    pid = fork();
-    if (pid < 0) {
-        exit(EXIT_FAILURE);
-    }
-
-    /* If we got a good PID, then
-    we can exit the parent process. */
-    if (pid > 0) {
-        exit(EXIT_SUCCESS);
-    }
-
-    /* Open any logs here */
-    /* Create a new SID for the child process */
-    sid = setsid();
-    if (sid < 0) {
-        /* Log any failure */
-        exit(EXIT_FAILURE);
-    }
-
-    /* Change the current working directory */
-    if ((chdir("/")) < 0) {
-        /* Log any failure here */
-        exit(EXIT_FAILURE);
-    }
-
-    /* Close out the standard file descriptors */
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
-#endif
-}
-
-/* Fast hack for secure strcpy, to lazy to check if is trully secure */
+/* Copy at most n-1 bytes from src into dest, always NUL-terminate.
+ * n is the full size of dest (pass sizeof(dest)). */
 char *strncpy_sx(char *dest, const char *src, size_t n) {
-    dest[n] = 0;
-    char *s = strncpy(dest, src, n-1);
-    return s;
+    size_t len;
+
+    if (n == 0) {
+        return dest;
+    }
+    len = strlen(src);
+    if (len >= n) {
+        len = n - 1;
+    }
+    memcpy(dest, src, len);
+    dest[len] = '\0';
+    return dest;
 }

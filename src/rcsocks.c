@@ -152,6 +152,7 @@ void new_connection_reverse (int soc_ec, s_client *tc, s_socket *socks_pool)
 
 void new_connection_socket(int soc_ec, s_socket *tc, int ssl)
 {
+    (void)ssl; /* only used when HAVE_LIBSSL is defined */
     int nc, soc_tmp;
     struct sockaddr_in adrC_tmp;
 

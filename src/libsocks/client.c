@@ -61,6 +61,7 @@ void disconnection(s_client *c)
 
 int new_connection(int soc_ec, s_client *tc, int ssl)
 {
+    (void)ssl; /* only used when HAVE_LIBSSL is defined */
     int nc, soc_tmp;
     struct sockaddr_in adrC_tmp;
 

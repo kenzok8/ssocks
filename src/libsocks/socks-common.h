@@ -194,7 +194,7 @@ typedef struct {
 		if ((k) < 0){ /* close_socket(soc); */ break; } /* Error */ \
 		if ((k) == 0) { break; } /* Need to read again */
 
-#define PEEK_DISP(buf, minsize) (buf_size((buf)) >= (minsize))
+#define PEEK_DISP(buf, minsize) ((size_t)buf_size((buf)) >= (minsize))
 
 /* Prototypes
  */

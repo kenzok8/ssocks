@@ -77,7 +77,7 @@ int test_version(s_socks *s, s_socks_conf *c, s_buffer *buf) {
 
     /* Testing version */
     char *allowed;
-    for (i=0; i <  c->config.srv->n_allowed_version; ++i) {
+    for (i=0; i < (int)c->config.srv->n_allowed_version; ++i) {
         allowed = &c->config.srv->allowed_version[i];
         if ( *allowed == req.ver ) {
             s->version = *allowed;
@@ -131,7 +131,7 @@ int test_version(s_socks *s, s_socks_conf *c, s_buffer *buf) {
      *         0x02, username/password RFC1929
      */
     for (i=0; i <  req.nmethods && s->method == -1; ++i) {
-        for (j = 0; j < c->config.srv->n_allowed_method; ++j ) {
+        for (j = 0; j < (int)c->config.srv->n_allowed_method; ++j ) {
             if ( c->config.srv->allowed_method[j] == req.methods[i] ) {
                 s->method = c->config.srv->allowed_method[j];
                 break;
@@ -163,6 +163,7 @@ int test_version(s_socks *s, s_socks_conf *c, s_buffer *buf) {
  */
 void build_version_ack(s_socks *s, s_socks_conf *c, s_buffer *buf)
 {
+    (void)c;
     Socks5VersionACK res;
     init_buffer(buf);
     res.ver = s->version;
@@ -295,6 +296,7 @@ int test_auth(s_socks *s, s_socks_conf *c, s_buffer *buf)
  */
 void build_auth_ack(s_socks *s, s_socks_conf *c, s_buffer *buf)
 {
+    (void)c;
     Socks5AuthACK res;
     init_buffer(buf);
     res.ver = 0x01;
@@ -345,6 +347,7 @@ void build_auth_ack(s_socks *s, s_socks_conf *c, s_buffer *buf)
 int analyse_request(s_socks *s, s_socket *stream, s_socket *bind,
                     s_socks_conf *c, s_buffer *buf)
 {
+    (void)c;
     Socks5Req req;
     TRACE(L_DEBUG, "server [%d]: testing client request ...",
           s->id);
@@ -453,11 +456,6 @@ int analyse_request(s_socks *s, s_socket *stream, s_socket *bind,
     return 0;
 }
 
-int test_request_dynamic(s_socks *s, s_socks_conf *c, s_buffer *buf)
-{
-    return -1;
-}
-
 /* Build request packet ack in buf
  *
  * From RFC1928:
@@ -495,6 +493,7 @@ int test_request_dynamic(s_socks *s, s_socks_conf *c, s_buffer *buf)
 void build_request_ack(s_socks *s, s_socks_conf *c,
                        s_socket *stream, s_socket *bind, s_buffer *buf)
 {
+    (void)c;
 
     Socks5ReqACK res;
     int k;
@@ -990,6 +989,7 @@ void init_select_server (int soc_ec, s_client *tc, int *maxfd,
 int init_select_server_reverse (s_client *tc, int *maxfd,
                                 int ncon, fd_set *set_read, fd_set *set_write, int ssl)
 {
+    (void)ssl; /* only used when HAVE_LIBSSL is defined */
     /* Security to avoid segmentation fault on tc tab */
     if ( ncon >= MAXCLI ) ncon = MAXCLI-1;
 

@@ -38,7 +38,6 @@ int build_request_accept_bind(s_socks *s, s_socks_conf *c,
 void build_request_ack(s_socks *s, s_socks_conf *c,
                        s_socket *stream, s_socket *bind, s_buffer *buf);
 
-int test_request_dynamic(s_socks *s, s_socks_conf *c, s_buffer *buf);
 int analyse_request(s_socks *s, s_socket *stream, s_socket *bind,
                     s_socks_conf *c, s_buffer *buf);
 

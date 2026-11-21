@@ -44,94 +44,12 @@ int bor_signal (int sig, void (*h)(int), int options)
 #endif
 
 
-/* Attachement d'une socket de domaine AF_UNIX a une adresse sockaddr_un
-   Renvoie le resultat de bind(). Verbeux.
-*/
-int bor_bind_un (int soc, struct sockaddr_un *adr)
-{
-    int r = bind (soc, (struct sockaddr *) adr, sizeof(struct sockaddr_un));
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
-/* Envoi d'un datagramme
-   Renvoie le resultat de sendto. Verbeux.
-*/
-int bor_sendto_un (int soc, void *buf, size_t len, struct sockaddr_un *adr)
-{
-    int r = sendto (soc, buf, len, 0, (struct sockaddr *) adr,
-                    sizeof(struct sockaddr_un));
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
-/* Reception d'un datagramme
-   Renvoie le resultat de recvfrom. Verbeux.
-*/
-int bor_recvfrom_un (int soc, void *buf, size_t len, struct sockaddr_un *adr)
-{
-    socklen_t adrlen = sizeof(struct sockaddr_un);
-    int r = recvfrom (soc, buf, len, 0, (struct sockaddr *) adr, &adrlen);
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
-/* Connexion a un serveur TCP/UN
-   Renvoie le resultat de connect. Verbeux.
-*/
-int bor_connect_un (int soc, struct sockaddr_un *adr)
-{
-    int r = connect (soc, (struct sockaddr *) adr, sizeof(struct sockaddr_un));
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
-/* Accepte une connexion en attente.
-   Renvoie le resultat de accept. Verbeux.
- */
-int bor_accept_un (int soc, struct sockaddr_un *adr)
-{
-    socklen_t adrlen = sizeof(struct sockaddr_un);
-    int r = accept (soc, (struct sockaddr *) adr, &adrlen);
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
 /* Attachement d'une socket de domaine AF_INET a une adresse sockaddr_in
    Renvoie le resultat de bind(). Verbeux.
 */
 int bor_bind_in (int soc, struct sockaddr_in *adr)
 {
     int r = bind (soc, (struct sockaddr *) adr, sizeof(struct sockaddr_in));
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
-/* Envoi d'un datagramme
-   Renvoie le resultat de sendto. Verbeux.
-*/
-int bor_sendto_in (int soc, void *buf, size_t len, struct sockaddr_in *adr)
-{
-    int r = sendto (soc, buf, len, 0, (struct sockaddr *) adr,
-                    sizeof(struct sockaddr_in));
-    if (r < 0) bor_perror (__func__);
-    return r;
-}
-
-
-/* Reception d'un datagramme
-   Renvoie le resultat de recvfrom. Verbeux.
-*/
-int bor_recvfrom_in (int soc, void *buf, size_t len, struct sockaddr_in *adr)
-{
-    socklen_t adrlen = sizeof(struct sockaddr_in);
-    int r = recvfrom (soc, buf, len, 0, (struct sockaddr *) adr, &adrlen);
     if (r < 0) bor_perror (__func__);
     return r;
 }
